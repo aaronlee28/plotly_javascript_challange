@@ -7,6 +7,7 @@ function getData(id){
     var otu_ids = result.otu_ids;
     var labels = result.otu_labels;
     var values = result.sample_values;
+    var freq = result.wfreq;
     
     // Build Bar Chart 
 
@@ -52,11 +53,6 @@ function getData(id){
     }
     
     Plotly.newPlot("bubble", chartData2, layout2);
-
-    // Build Gauge (Bonus)
-    var trace3 = {
-        
-    }
 })};
 
 
@@ -69,6 +65,22 @@ function demoInfo(id){
     var box = d3.select("#sample-metadata");
     Object.entries(result).forEach(([key, value]) => {
         box.append("h5").text(`${key}: ${value}`);
+    
+    var freq = result.wfreq
+    var trace3 = [
+        {
+            domain: { x: [0, 10], y: [0, 10] },
+            value: freq,
+            title: { text: "Belly Button Washing Frequency" },
+            type: "indicator",
+            mode: "gauge+number"
+            
+        }
+    ];
+    
+    var layout = { width: 600, height: 500, margin: { t: 0, b: 0 },
+  };
+    Plotly.newPlot('gauge', trace3, layout);
     });
     });
 
@@ -77,7 +89,8 @@ function init(){
     var dropdown = d3.select('#selDataset');
     d3.json("data/samples.json").then((importedData) => {
         var data = importedData;
-        names = data.names;
+        var freq = data.metadata.wfreq;
+        var names = data.names;
         names.forEach((name)=>{
             dropdown.append('option').text(name).property('value',name)
         }); 
