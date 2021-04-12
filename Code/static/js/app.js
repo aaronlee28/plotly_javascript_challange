@@ -52,6 +52,11 @@ function getData(id){
     }
     
     Plotly.newPlot("bubble", chartData2, layout2);
+
+    // Build Gauge (Bonus)
+    var trace3 = {
+        
+    }
 })};
 
 
@@ -62,11 +67,28 @@ function demoInfo(id){
     var results= metadata.filter(object => object.id == id);
     var result= results[0]
     var box = d3.select("#sample-metadata");
-    box.html("");
     Object.entries(result).forEach(([key, value]) => {
         box.append("h5").text(`${key}: ${value}`);
     });
     });
 
 }
-demoInfo(940)
+function init(){
+    var dropdown = d3.select('#selDataset');
+    d3.json("data/samples.json").then((importedData) => {
+        var data = importedData;
+        names = data.names;
+        names.forEach((name)=>{
+            dropdown.append('option').text(name).property('value',name)
+        }); 
+        const initial = names[0]
+        getData(initial);
+        demoInfo(initial);
+        });
+}    
+function optionChanged(newid){
+    getData(newid)
+    demoInfo(newid)
+}
+
+init();
