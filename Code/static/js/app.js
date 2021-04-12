@@ -1,44 +1,33 @@
-d3.json("data/samples.json").then((importedData) => {
+function getData(){
+  d3.json("data/samples.json").then((importedData) => {
     var data = importedData;
     console.log(data);
-
-  // Sort the data array using the greekSearchResults value
-    data.sort(function(a, b) {
-    return parseFloat(b.wfreq) - parseFloat(a.wfreq);
-    });
-
-  // Slice the first 10 objects for plotting
-    data = data.slice(0, 10);
-
-  // Reverse the array due to Plotly's defaults
-    data = data.reverse();
-
-  // Trace1 for the Greek Data
+    var ids = data.samples[0].otu_ids.slice(0,10);
+    console.log(ids);
+    var sampleValues =  data.samples[0].sample_values.slice(0,10);
+    console.log(sampleValues)
+    var labels = data.samples[0].otu_labels.slice(0,10);
+    console.log(labels)
     var trace1 = {
-        x: data.metadata.map(row => row.wfreq),
-        y: data.metadata.map(row => row.id),
-        text: data.metadata.map(row => row.id),
-        name: "Belly",
-        type: "bar",
-        orientation: "h"
+      x: sampleValues,
+      y: ids,
+      text: labels,
+      marker: {
+      color: 'blue'},
+      type:"bar",
+      orientation: "h",
     };
-
-  // data
-    var chartData = [trace1];
-
-  // Apply the group bar mode to the layout
+    var chartData = [trace1]
     var layout = {
-        title: "Greek gods search results",
-        margin: {
-        l: 100,
-        r: 100,
-        t: 100,
-        b: 100
-        }
-    };
-
-    // Render the plot to the div tag with id "plot"
-    Plotly.newPlot("plot", chartData, layout);
-    })
-
+      title: "",
+      margin:{
+        l:100,
+        r:100,
+        t:100,
+        b:100
+      }
+    }
+    Plotly.newPlot('bar', chartData, layout)
+})};
+getData()
 
