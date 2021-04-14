@@ -1,8 +1,11 @@
 function getData(id){
     d3.json("data/samples.json").then((importedData) => {
     var data = importedData;
+    console.log(data)
     var samples = data.samples;
+    console.log(samples)
     var results = samples.filter (object => object.id == id);
+    console.log(results)
     var result = results[0]
     var otu_ids = result.otu_ids;
     var labels = result.otu_labels;
